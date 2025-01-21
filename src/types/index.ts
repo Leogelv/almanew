@@ -78,6 +78,8 @@ export interface Challenge {
   title: string
   description: string
   icon: React.ReactNode
+  gradient?: string
+  pattern?: string
 }
 
 export interface ChallengesProps {
