@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 'use client'
 
->>>>>>> aee27ec (feat: initial commit with Next.js landing page)
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
