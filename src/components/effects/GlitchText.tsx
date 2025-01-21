@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+'use client'
+
+>>>>>>> aee27ec (feat: initial commit with Next.js landing page)
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 
@@ -12,7 +17,11 @@ export function GlitchText({ text, className = '' }: GlitchTextProps) {
   
   useEffect(() => {
     let iteration = 0
+<<<<<<< HEAD
     let interval: NodeJS.Timeout | null = null
+=======
+    let interval: ReturnType<typeof setInterval> | null = null
+>>>>>>> aee27ec (feat: initial commit with Next.js landing page)
     
     const handleMouseOver = () => {
       interval = setInterval(() => {

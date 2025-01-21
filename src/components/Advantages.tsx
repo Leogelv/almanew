@@ -1,6 +1,9 @@
-import { motion } from 'framer-motion'
+'use client'
 
-const advantages = [
+import { motion } from 'framer-motion'
+import type { AdvantagesProps, Advantage } from '@/types'
+
+const defaultAdvantages: Advantage[] = [
   {
     id: 1,
     title: 'Отделяем реальную пользу от хайпа',
@@ -31,9 +34,9 @@ const stats = [
   { id: 3, value: '300%', label: 'средний рост эффективности' }
 ]
 
-export function Advantages() {
+export function Advantages({ advantages = defaultAdvantages }: AdvantagesProps) {
   return (
-    <section className="relative py-32 overflow-hidden">
+    <section className="relative py-24 sm:py-32 overflow-hidden">
       {/* Фоновые элементы */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-50 to-white" />
@@ -41,46 +44,22 @@ export function Advantages() {
         <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-secondary-500/5 to-transparent" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16">
-          {/* Левая колонка */}
-          <div>
-            <motion.div 
-              className="inline-block mb-4 px-6 py-2 rounded-full bg-gradient-to-r from-primary-500/10 to-secondary-500/10 
-                       border border-primary-500/20"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent font-medium">
-                Наш подход
-              </span>
-            </motion.div>
-
-            <motion.h2 
-              className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-8
-                       tracking-tight"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              Наши преимущества
-            </motion.h2>
-
-            <div className="space-y-8">
-              {advantages.map((advantage, index) => (
-                <motion.div
-                  key={advantage.id}
-                  className="flex gap-6"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
-                >
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 
-                               p-2.5 text-white">
+          {/* Преимущества */}
+          <div className="space-y-8">
+            {advantages.map((advantage, index) => (
+              <motion.div
+                key={advantage.id}
+                className="relative"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="flex gap-4 items-start">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-500 to-secondary-500 
+                               flex items-center justify-center text-white shrink-0">
                     {advantage.icon}
                   </div>
                   <div>
@@ -91,48 +70,44 @@ export function Advantages() {
                       {advantage.description}
                     </p>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
 
-          {/* Правая колонка */}
-          <div className="lg:pl-16 flex flex-col justify-center">
-            <div className="relative">
-              {/* Декоративный элемент */}
-              <div className="absolute -inset-4">
-                <div className="w-full h-full mx-auto opacity-30 blur-lg filter"
-                     style={{
-                       background: 'radial-gradient(circle at 50% 50%, var(--tw-gradient-from), transparent 70%)'
-                     }} />
-              </div>
+          {/* Статистика */}
+          <div className="relative">
+            <div className="absolute -inset-4">
+              <div className="w-full h-full mx-auto opacity-30 blur-lg filter"
+                   style={{
+                     background: 'radial-gradient(circle at 50% 50%, var(--tw-gradient-from), transparent 70%)'
+                   }} />
+            </div>
 
-              {/* Статистика */}
-              <div className="relative grid grid-cols-2 gap-8">
-                {stats.map((stat, index) => (
-                  <motion.div
-                    key={stat.id}
-                    className={`${index === 2 ? 'col-span-2' : ''} p-8 rounded-2xl bg-white shadow-xl shadow-gray-200/50 
-                             border border-gray-100 text-center group hover:scale-105 transition-transform duration-300`}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
-                  >
-                    <div className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 
-                                 bg-clip-text text-transparent mb-2">
-                      {stat.value}
-                    </div>
-                    <div className="text-gray-600 font-light">
-                      {stat.label}
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+            <div className="relative grid grid-cols-2 gap-4 sm:gap-8">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.id}
+                  className={`${index === 2 ? 'col-span-2' : ''} p-6 sm:p-8 rounded-2xl bg-white shadow-xl shadow-gray-200/50 
+                           border border-gray-100 text-center group hover:scale-105 transition-transform duration-300`}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 + 0.4 }}
+                >
+                  <div className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 
+                               bg-clip-text text-transparent mb-2">
+                    {stat.value}
+                  </div>
+                  <div className="text-sm sm:text-base text-gray-600 font-light">
+                    {stat.label}
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
       </div>
     </section>
   )
-} 
+}

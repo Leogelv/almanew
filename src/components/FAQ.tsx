@@ -1,71 +1,52 @@
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+'use client'
 
-const faqs = [
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import type { FAQProps } from '@/types'
+
+const defaultItems = [
   {
     id: 1,
-    question: 'Как быстро можно начать использовать AI в бизнесе?',
-    answer: 'Внедрение AI начинается с экспресс-аудита, который занимает 2-3 дня. После этого вы получаете готовый план действий и можете начать пилотный проект уже через неделю.'
+    question: 'Как быстро можно внедрить AI-ассистента?',
+    answer: 'Внедрение занимает от 2 до 6 недель в зависимости от сложности задач и готовности инфраструктуры. Мы предоставляем пошаговый план и поддержку на всех этапах.'
   },
   {
     id: 2,
-    question: 'Какой бюджет нужен для старта?',
-    answer: 'Мы предлагаем гибкие условия сотрудничества. Начать можно с бесплатного тестирования готовых решений. Пилотные проекты стартуют от 300 тыс. рублей.'
+    question: 'Какие технические требования для внедрения?',
+    answer: 'Минимальные требования включают доступ к интернету и современный браузер. Для более сложных решений может потребоваться API-интеграция с вашими системами.'
   },
   {
     id: 3,
-    question: 'Нужно ли обучать сотрудников?',
-    answer: 'Мы создаем интуитивно понятные решения, которые не требуют специальных навыков. При необходимости проводим краткие обучающие сессии для команды.'
+    question: 'Как обеспечивается безопасность данных?',
+    answer: 'Мы используем шифрование, безопасные протоколы передачи данных и изолированные среды для каждого клиента. Все данные хранятся на серверах в РФ.'
   },
   {
     id: 4,
-    question: 'Как защищены данные компании?',
-    answer: 'Мы используем современные методы шифрования, локальное размещение данных и подписываем NDA. Каждое решение проходит аудит безопасности.'
+    question: 'Можно ли настроить ассистента под наши процессы?',
+    answer: 'Да, каждое решение адаптируется под ваши бизнес-процессы, терминологию и особенности работы. Мы проводим обучение на ваших данных.'
+  },
+  {
+    id: 5,
+    question: 'Какая поддержка предоставляется после внедрения?',
+    answer: 'Мы обеспечиваем техническую поддержку 24/7, регулярные обновления и дообучение системы. При необходимости проводим дополнительные тренинги.'
   }
 ]
 
-function FAQItem({ question, answer }: { question: string; answer: string }) {
-  const [isOpen, setIsOpen] = useState(false)
+export function FAQ({ items = defaultItems }: FAQProps) {
+  const [activeId, setActiveId] = useState<number | null>(null)
 
   return (
-    <div className="border-b border-gray-200 last:border-0">
-      <button
-        className="w-full py-6 flex justify-between items-center text-left bg-white hover:bg-gray-50 transition-colors duration-200"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span className="text-lg font-medium text-[#1E1E1E]">{question}</span>
-        <span className={`ml-6 flex-shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
-          <svg className="h-6 w-6 text-[#B47D3C]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </span>
-      </button>
-      <motion.div
-        initial={false}
-        animate={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
-        className="overflow-hidden bg-white"
-      >
-        <p className="pb-6 text-[#4A4A4A] font-light leading-relaxed">
-          {answer}
-        </p>
-      </motion.div>
-    </div>
-  )
-}
-
-export function FAQ() {
-  return (
-    <section className="relative py-32 overflow-hidden">
+    <section className="relative py-24 sm:py-32 overflow-hidden bg-gradient-to-b from-gray-50 to-white">
       {/* Фоновые элементы */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-gray-50 to-white" />
-        <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-primary-500/5 to-transparent" />
-        <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-secondary-500/5 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-primary-500/10 to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-secondary-500/10 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-primary-500/5 via-transparent to-transparent" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-20">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Заголовок */}
+        <div className="text-center mb-16 sm:mb-20">
           <motion.div 
             className="inline-block mb-4 px-6 py-2 rounded-full bg-gradient-to-r from-primary-500/10 to-secondary-500/10 
                      border border-primary-500/20"
@@ -75,34 +56,115 @@ export function FAQ() {
             transition={{ duration: 0.5 }}
           >
             <span className="bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent font-medium">
-              FAQ
+              Часто задаваемые вопросы
             </span>
           </motion.div>
 
           <motion.h2 
-            className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-8
-                     tracking-tight"
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent 
+                     tracking-tight max-w-2xl mx-auto mb-4"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Часто задаваемые вопросы
+            Ответы на популярные вопросы
           </motion.h2>
+
+          <motion.p
+            className="text-gray-600 max-w-2xl mx-auto text-base sm:text-lg"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Всё что нужно знать о внедрении AI-ассистентов
+          </motion.p>
         </div>
 
+        {/* Аккордеон с вопросами */}
+        <div className="max-w-3xl mx-auto">
+          {items.map((item, index) => (
+            <motion.div
+              key={item.id}
+              className="mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              <button
+                onClick={() => setActiveId(activeId === item.id ? null : item.id)}
+                className="w-full p-6 sm:p-8 rounded-2xl bg-white shadow-xl shadow-gray-200/50 border border-gray-100 
+                         text-left transition-all duration-300 relative
+                         group hover:scale-[1.02]"
+              >
+                {/* Декоративные элементы */}
+                <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-primary-500/30 to-secondary-500/30 
+                             opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 
+                             group-hover:shadow-[0_0_30px_rgba(99,102,241,0.3)]" />
+
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
+                    {item.question}
+                  </h3>
+                  <svg
+                    className={`w-6 h-6 text-primary-500 transition-transform duration-300 flex-shrink-0
+                            ${activeId === item.id ? 'rotate-180' : ''}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+
+                <AnimatePresence>
+                  {activeId === item.id && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                      animate={{ height: 'auto', opacity: 1, marginTop: 16 }}
+                      exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="text-gray-600 text-base sm:text-lg">
+                        {item.answer}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </button>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Кнопка */}
         <motion.div 
-          className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl p-8"
+          className="mt-12 sm:mt-16 text-center"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
         >
-          {faqs.map((faq) => (
-            <FAQItem key={faq.id} question={faq.question} answer={faq.answer} />
-          ))}
+          <button 
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-primary-500/10 to-secondary-500/10 
+                     text-gray-900 font-medium relative overflow-hidden group/btn
+                     hover:from-primary-500 hover:to-secondary-500 hover:text-white
+                     transition-all duration-300"
+          >
+            <span className="relative z-10">Задать свой вопрос</span>
+            <svg 
+              className="w-5 h-5 transition-transform duration-300 group-hover/btn:translate-x-1 relative z-10" 
+              viewBox="0 0 20 20" 
+              fill="currentColor"
+            >
+              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
         </motion.div>
       </div>
     </section>
   )
-} 
+}

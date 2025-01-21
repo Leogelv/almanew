@@ -1,11 +1,18 @@
+'use client'
+
+import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Canvas } from '@react-three/fiber'
 import { Float, OrbitControls, Preload } from '@react-three/drei'
 import AIBrain from './3d/AIBrain'
 import { ParticleField } from './effects/ParticleField'
-import { useRef } from 'react'
+import type { HeroProps } from '@/types'
 
-const Hero = () => {
+const Hero = ({ 
+  title = "Получи AI-стратегию за 5 минут", 
+  subtitle = "Наш сервис анализирует данные вашей компании и подсказывает, какие задачи можно автоматизировать с помощью AI уже сейчас.", 
+  ctaText = "Провести диагностику" 
+}: HeroProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -17,11 +24,11 @@ const Hero = () => {
   return (
     <div 
       ref={containerRef}
-      className="relative w-full min-h-screen flex items-center bg-gradient-to-br from-white via-gray-50 to-white text-gray-900"
+      className="relative w-full min-h-[100svh] flex items-center bg-gradient-to-br from-white via-gray-50 to-white text-gray-900 px-4 sm:px-6 overflow-hidden"
     >
       {/* Фоновые элементы */}
       <div className="absolute inset-0 bg-mesh-pattern opacity-5" />
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 lg:block hidden">
         <Canvas camera={{ position: [0, 0, 5] }}>
           <ParticleField />
           <Preload all />
@@ -30,10 +37,10 @@ const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white/80" />
 
       {/* Основной контент */}
-      <div className="relative w-full max-w-7xl mx-auto px-6 lg:px-8">
+      <div className="relative w-full max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
           {/* Левая колонка */}
-          <motion.div className="w-full lg:w-[40%] space-y-8" style={{ y }}>
+          <motion.div className="w-full lg:w-[45%] space-y-6 sm:space-y-8 text-center lg:text-left" style={{ y }}>
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -49,28 +56,28 @@ const Hero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-5xl lg:text-6xl font-bold bg-gradient-to-br from-gray-900 to-gray-700 bg-clip-text text-transparent tracking-tight"
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-br from-gray-900 to-gray-700 bg-clip-text text-transparent tracking-tight"
             >
-              Получи AI-стратегию за 5 минут
+              {title}
             </motion.h1>
             
             <motion.p 
-              className="text-xl text-gray-600 max-w-xl font-light leading-relaxed"
+              className="text-lg sm:text-xl text-gray-600 max-w-xl font-light leading-relaxed mx-auto lg:mx-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Наш сервис анализирует данные вашей компании и подсказывает, какие задачи можно автоматизировать с помощью AI уже сейчас.
+              {subtitle}
             </motion.p>
 
-            <motion.div className="flex flex-wrap items-center gap-6 pt-4">
+            <motion.div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-4">
               <motion.button 
-                className="px-8 py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-lg font-medium 
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full text-base sm:text-lg font-medium 
                          text-white hover:shadow-glow-lg transition-all relative overflow-hidden group whitespace-nowrap"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <span className="relative z-10">Провести диагностику</span>
+                <span className="relative z-10">{ctaText}</span>
                 <motion.div 
                   className="absolute inset-0 bg-gradient-to-r from-secondary-500 to-primary-500"
                   initial={{ x: "100%" }}
@@ -91,7 +98,7 @@ const Hero = () => {
           </motion.div>
 
           {/* Правая колонка с 3D */}
-          <div className="w-full lg:w-[55%] aspect-square">
+          <div className="w-full lg:w-[55%] aspect-square max-h-[600px] min-h-[300px]">
             <motion.div 
               className="w-full h-full scale-125"
               initial={{ scale: 0.8, opacity: 0 }}
@@ -119,4 +126,4 @@ const Hero = () => {
   )
 }
 
-export default Hero 
+export default Hero

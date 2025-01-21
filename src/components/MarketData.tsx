@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { useState, useEffect } from 'react'
@@ -61,6 +62,62 @@ export function MarketData() {
           <motion.div 
             className="inline-block mb-4 px-6 py-2 rounded-full bg-gradient-to-r from-primary-500/10 to-secondary-500/10 
                      border border-primary-500/20"
+=======
+'use client'
+
+// Import updates for Next.js
+import Image from 'next/image'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { useRef } from 'react'
+import type { MarketDataProps, MarketDataItem } from '@/types'
+
+const defaultData: MarketDataItem[] = [
+  {
+    id: 1,
+    value: '2027',
+    label: 'К этому году каждая вторая GenAI-модель будет отраслевой',
+    gradient: 'gradient-purple'
+  },
+  {
+    id: 2,
+    value: '$4.4T',
+    label: 'Вклад AI в мировую экономику к 2030 году составит $2.6-4.4 трлн ежегодно',
+    gradient: 'gradient-green'
+  },
+  {
+    id: 3,
+    value: '6x',
+    label: 'Рост инвестиций в AI вырос в 6 раз за 2024 год',
+    gradient: 'gradient-orange'
+  }
+]
+
+export function MarketData({ data = defaultData }: MarketDataProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+
+  return (
+    <section ref={containerRef} className="relative py-32 overflow-hidden bg-gradient-to-b from-white to-gray-50">
+      {/* Фоновые элементы */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-primary-500/20 via-primary-500/10 to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-1/2 bg-gradient-to-l from-secondary-500/20 via-secondary-500/10 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-500/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-mesh-pattern opacity-10" />
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Заголовок */}
+        <div className="text-center mb-20">
+          <motion.div 
+            className="inline-block mb-4 px-6 py-2 rounded-full bg-gradient-to-r from-primary-500/30 to-secondary-500/30 
+                     border border-primary-500/50 shadow-[0_0_20px_rgba(99,102,241,0.3)]"
+>>>>>>> aee27ec (feat: initial commit with Next.js landing page)
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -72,8 +129,13 @@ export function MarketData() {
           </motion.div>
 
           <motion.h2 
+<<<<<<< HEAD
             className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-8
                      tracking-tight"
+=======
+            className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-800 bg-clip-text text-transparent 
+                     tracking-tight max-w-2xl mx-auto mb-6"
+>>>>>>> aee27ec (feat: initial commit with Next.js landing page)
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -81,6 +143,7 @@ export function MarketData() {
           >
             AI: время действовать
           </motion.h2>
+<<<<<<< HEAD
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -138,8 +201,66 @@ export function MarketData() {
                        transition-opacity duration-300 group-hover:opacity-100"
             />
           </button>
+=======
+
+          <motion.p
+            className="text-gray-700 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Ключевые показатели развития искусственного интеллекта
+          </motion.p>
+        </div>
+
+        {/* Карточки с данными */}
+        <motion.div style={{ y }} className="grid md:grid-cols-3 gap-8">
+          {data.map((item, index) => (
+            <motion.div
+              key={item.id}
+              className="relative p-8 rounded-2xl bg-white shadow-xl shadow-gray-200/50 border border-gray-100 
+                       group hover:scale-105 transition-all duration-300 animate-float"
+              style={{ animationDelay: `${index * 0.2}s` }}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+            >
+              {/* Декоративные элементы */}
+              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-primary-500/30 to-secondary-500/30 
+                           opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 
+                           group-hover:shadow-[0_0_30px_rgba(99,102,241,0.3)]" />
+
+              <motion.div 
+                className={`text-6xl lg:text-7xl font-bold ${item.gradient} bg-clip-text text-transparent mb-4
+                         relative after:absolute after:inset-0 after:bg-gradient-to-r after:from-white/20 after:to-transparent 
+                         after:animate-pulse`}
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+              >
+                {item.value}
+              </motion.div>
+
+              <p className="text-gray-700 font-light leading-relaxed text-lg">
+                {item.label}
+              </p>
+
+              <div className={`absolute -bottom-1 left-0 right-0 h-1 ${item.gradient}
+                           opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-2xl`} />
+            </motion.div>
+          ))}
+>>>>>>> aee27ec (feat: initial commit with Next.js landing page)
         </motion.div>
       </div>
     </section>
   )
+<<<<<<< HEAD
 } 
+=======
+}
+
+export default MarketData
+>>>>>>> aee27ec (feat: initial commit with Next.js landing page)
