@@ -1,15 +1,16 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import type { MarketDataItem } from '@/types'
 
 const defaultData: MarketDataItem[] = [
   {
     id: 1,
     value: '85%',
-    label: 'Рост эффективности бизнес-процессов'
+    label: 'Рост эффективности бизнес-процессов',
+    gradient: 'gradient-blue'
   },
   {
     id: 2,
@@ -49,8 +50,16 @@ function AnimatedValue({ value }: { value: string }) {
 }
 
 export function MarketData() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
+
   return (
-    <section className="relative py-32 overflow-hidden">
+    <section ref={containerRef} className="relative py-32 overflow-hidden">
       {/* Фоновые элементы */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-white to-gray-50" />
@@ -101,7 +110,7 @@ export function MarketData() {
               key={item.id}
               className="relative p-8 rounded-2xl bg-white shadow-xl shadow-gray-200/50 border border-gray-100 
                        group hover:scale-105 transition-all duration-300 animate-float"
-              style={{ animationDelay: `${index * 0.2}s` }}
+              style={{ '--animation-delay': `${index * 0.2}s` } as React.CSSProperties}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
