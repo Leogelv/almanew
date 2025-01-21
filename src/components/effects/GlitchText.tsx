@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 'use client'
 
->>>>>>> aee27ec (feat: initial commit with Next.js landing page)
 import { useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 
@@ -12,56 +9,36 @@ interface GlitchTextProps {
 }
 
 export function GlitchText({ text, className = '' }: GlitchTextProps) {
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-  const textRef = useRef<HTMLHeadingElement>(null)
-  
+  const containerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    let iteration = 0
-<<<<<<< HEAD
-    let interval: NodeJS.Timeout | null = null
-=======
-    let interval: ReturnType<typeof setInterval> | null = null
->>>>>>> aee27ec (feat: initial commit with Next.js landing page)
-    
-    const handleMouseOver = () => {
-      interval = setInterval(() => {
-        if (textRef.current) {
-          textRef.current.innerText = text
-            .split('')
-            .map((letter, index) => {
-              if (index < iteration) {
-                return text[index]
-              }
-              return letters[Math.floor(Math.random() * 26)]
-            })
-            .join('')
+    const container = containerRef.current
+    if (!container) return
 
-          if (iteration >= text.length) {
-            if (interval) clearInterval(interval)
-          }
-          iteration += 1/3
+    const glitchInterval = setInterval(() => {
+      const glitchText = text.split('').map(char => {
+        if (Math.random() < 0.1) {
+          return String.fromCharCode(33 + Math.floor(Math.random() * 94))
         }
-      }, 30)
-    }
+        return char
+      }).join('')
 
-    const element = textRef.current
-    element?.addEventListener('mouseover', handleMouseOver)
+      container.setAttribute('data-text', glitchText)
+    }, 50)
 
-    return () => {
-      element?.removeEventListener('mouseover', handleMouseOver)
-      if (interval) clearInterval(interval)
-    }
+    return () => clearInterval(glitchInterval)
   }, [text])
 
   return (
-    <motion.h1
-      ref={textRef}
-      className={className}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
+    <motion.div
+      ref={containerRef}
+      className={`relative ${className}`}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      data-text={text}
     >
       {text}
-    </motion.h1>
+    </motion.div>
   )
 } 
